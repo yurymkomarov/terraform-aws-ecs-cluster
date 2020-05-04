@@ -19,6 +19,12 @@ variable "instance_type" {
   }
 }
 
+variable "spot_price" {
+  type        = number
+  description = "The maximum price to use for reserving spot instances."
+  default     = null
+}
+
 variable "vpc_id" {
   type        = string
   description = "The identifier of the VPC in which to create the security group."

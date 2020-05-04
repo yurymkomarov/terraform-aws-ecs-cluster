@@ -15,6 +15,7 @@ locals {
     bootcmd:
       - mkdir -p /etc/ecs
       - echo 'ECS_CLUSTER=${aws_ecs_cluster.this.name}' >> /etc/ecs/ecs.config
+      - echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' >> /etc/ecs/ecs.config
       - echo 'LANG=en_US.utf-8' >> /etc/environment
       - echo 'LC_ALL=en_US.utf-8' >> /etc/environment
 
@@ -33,6 +34,7 @@ locals {
     bootcmd:
       - mkdir -p /etc/ecs
       - echo 'ECS_CLUSTER=${aws_ecs_cluster.this.name}' >> /etc/ecs/ecs.config
+      - echo 'ECS_ENABLE_SPOT_INSTANCE_DRAINING=true' >> /etc/ecs/ecs.config
       - echo 'LANG=en_US.utf-8' >> /etc/environment
       - echo 'LC_ALL=en_US.utf-8' >> /etc/environment
       - mkdir -p /home/ec2-user/efs
@@ -49,7 +51,7 @@ resource "random_id" "this" {
   keepers = {
     vpc_id               = var.vpc_id
     vpc_cidr_block       = var.vpc_cidr_block
-    vpc_zone_identifier          = join("", var.vpc_zone_identifier)
+    vpc_zone_identifier  = join("", var.vpc_zone_identifier)
     efs_enable           = var.efs_enable
     efs_storage_dns_name = var.efs_storage_dns_name
   }
@@ -163,6 +165,7 @@ resource "aws_launch_configuration" "this" {
   iam_instance_profile        = aws_iam_instance_profile.this.name
   image_id                    = data.aws_ami.this.id
   instance_type               = var.instance_type
+  spot_price                  = var.spot_price
   key_name                    = aws_key_pair.this.key_name
   name                        = "${var.name}-${data.aws_ami.this.image_id}-${md5(var.efs_enable ? local.user_data_efs : local.user_data)}-${random_id.this.hex}"
   security_groups             = [aws_security_group.this.id]
