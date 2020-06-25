@@ -38,7 +38,7 @@ locals {
       - echo 'LANG=en_US.utf-8' >> /etc/environment
       - echo 'LC_ALL=en_US.utf-8' >> /etc/environment
       - mkdir -p /home/ec2-user/efs
-      - mount -t nfs4 -o nfsvers=4.1,rsize=2048,wsize=2048,hard,timeo=600,retrans=2,noresvport ${var.efs_storage_dns_name}:/ /home/ec2-user/efs
+      - mount -t nfs4 -o nfsvers=4.1,rsize=2048,wsize=2048,hard,timeo=600,retrans=2,noresvport ${try(var.efs_storage_dns_name, "")}:/ /home/ec2-user/efs
       - chown www-data:www-data /home/ec2-user/efs
 
     final_message: "The system is finally up, after $UPTIME seconds"
