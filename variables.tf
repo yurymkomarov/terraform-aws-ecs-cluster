@@ -54,5 +54,5 @@ variable "efs_enable" {
 variable "efs_storage_dns_name" {
   type        = string
   description = "The DNS name for the EFS."
-  default     = null
+  default     = ""
 }
