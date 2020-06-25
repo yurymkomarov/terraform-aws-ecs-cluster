@@ -48,9 +48,11 @@ variable "vpc_cidr_block" {
 variable "efs_enable" {
   type        = bool
   description = "Enable EFS mount for cluster instances."
+  default     = false
 }
 
 variable "efs_storage_dns_name" {
   type        = string
   description = "The DNS name for the EFS."
+  default     = null
 }
